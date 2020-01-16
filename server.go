@@ -52,7 +52,7 @@ func getEnvironmentVariables(w http.ResponseWriter, r *http.Request) {
 }
 
 func writeSumToFile(sum float32) bool {
-	f, err := os.OpenFile("data", os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModeAppend)
+	f, err := os.OpenFile("/data/data", os.O_CREATE|os.O_RDWR|os.O_APPEND, os.ModeAppend)
 	if err != nil {
 		return false
 	}

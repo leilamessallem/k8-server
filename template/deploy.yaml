@@ -22,11 +22,3 @@ spec:
           envFrom:
             - configMapRef:
                 name: server-config
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: server-config
-data:
-  LOCATION: sweden
-  USER: leila
