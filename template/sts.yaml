@@ -18,13 +18,18 @@ spec:
     spec:
       containers:
         - name: server
-          image: eu.gcr.io/ne-leila-rc1t/server:1.3.0
+          image: eu.gcr.io/ne-leila-rc1t/server:1.4.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
                 name: server-config
+          env:
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
           volumeMounts:
             - name: server-volume
               mountPath: /data
@@ -34,6 +39,7 @@ spec:
           volumeMounts:
             - name: server-volume
               mountPath: /data
+      serviceAccountName: server-service-account
       volumes:
         - name: server-volume
           persistentVolumeClaim:

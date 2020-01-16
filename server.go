@@ -21,6 +21,7 @@ func main() {
 	router.HandleFunc("/health", ping).Methods("GET")
 	router.HandleFunc("/add", sumTwoNumbers).Methods("POST")
 	router.HandleFunc("/env", getEnvironmentVariables).Methods("GET")
+	router.HandleFunc("/node", getNodeName).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
@@ -49,6 +50,12 @@ func getEnvironmentVariables(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	json.NewEncoder(w).Encode(fmt.Sprintf("%s %s", os.Getenv("LOCATION"), os.Getenv("USER")))
+}
+
+func getNodeName(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(os.Getenv("MY_NODE_NAME"))
 }
 
 func writeSumToFile(sum float32) bool {
