@@ -28,6 +28,12 @@ spec:
           volumeMounts:
             - name: server-volume
               mountPath: /data
+        - name: logger
+          image: eu.gcr.io/ne-leila-rc1t/logger:1.0.0
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: server-volume
+              mountPath: /data
       volumes:
         - name: server-volume
           persistentVolumeClaim:
