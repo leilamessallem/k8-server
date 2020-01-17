@@ -31,16 +31,32 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
           volumeMounts:
-            - name: server-volume
+            - name: pv-claim
               mountPath: /data
         - name: logger
           image: eu.gcr.io/ne-leila-rc1t/logger:1.0.0
           imagePullPolicy: Always
           volumeMounts:
-            - name: server-volume
+            - name: pv-claim
               mountPath: /data
       serviceAccountName: server-service-account
-      volumes:
-        - name: server-volume
-          persistentVolumeClaim:
-            claimName: pv-claim
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - server
+              topologyKey: "kubernetes.io/hostname"
+  volumeClaimTemplates:
+    - metadata:
+        name: pv-claim
+      spec:
+        storageClassName: standard
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Mi
